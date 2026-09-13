@@ -18,7 +18,7 @@ A modular Spring Boot service is the smallest architecture that is operationally
 
 ## Validation status
 
-The code and configuration received static/manual consistency review in the authoring environment. Automated Maven and Docker execution could not be run there because Maven and Docker were unavailable. `mvn clean verify` is therefore a mandatory reviewer/CI gate, not represented as already passed. The Docker build itself executes `mvn verify`, preventing an image from being produced when compilation, tests, or Checkstyle fail.
+GitHub Actions run 8 executed `mvn -B clean verify` on Java 17 with `BUILD SUCCESS`: four unit tests and two Spring Boot end-to-end integration tests passed with zero failures, errors, or skips. The Docker build also executes `mvn verify`, preventing an image from being produced when compilation or tests fail. Docker Compose itself was not started in CI and remains a reviewer smoke-test step.
 
 ## Key risks and controls
 
