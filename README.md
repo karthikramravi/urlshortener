@@ -152,12 +152,12 @@ No proprietary code, customer data, credentials, logs, or internal URLs were sup
 | Gate | Command/check | Blocking criterion |
 |---|---|---|
 | Compile + unit/integration tests | `mvn clean verify` | Any compilation or test failure |
-| Static analysis | CI SAST and compiler diagnostics | Any critical/high issue or compiler error |
+| Static analysis | Compiler diagnostics in CI; organization-approved SAST before production | Any compiler error or unapproved critical/high finding |
 | API compatibility | Review `openapi.yaml` diff | Breaking change without version/approval |
 | Schema | Flyway migration against clean and upgraded DB | Migration failure or destructive change |
-| Security | Dependency/SAST/container scan in CI | Critical/high finding without explicit exception |
-| Performance | Concurrent redirect test | Lost counts or agreed latency/error SLO breach |
-| Operational | Health probe and graceful shutdown | Probe/start/termination failure |
+| Security | Prototype threat review complete; dependency, secret, and container scans required before production | Critical/high finding without explicit exception |
+| Performance | Atomic-update design review complete; concurrent load test required before production | Lost counts or agreed latency/error SLO breach |
+| Operational | Local Compose startup and health probe | Probe/start/termination failure |
 | Human control | PR review + owner sign-off | Missing approval for high-impact change |
 
 ## Risks, trade-offs, and production evolution
@@ -177,7 +177,7 @@ Capacity decisions need real targets. Before production, confirm peak creates/re
 
 ## Definition of done and limitations
 
-Done means the application builds, tests pass, Compose starts app/database, all documented status codes behave as specified, migration succeeds, quality/security scans have no unapproved blockers, and a human reviewer approves the change.
+Assessment done means the application builds, automated tests pass, Compose starts the app/database, documented status codes behave as specified, and the migration succeeds. Production release additionally requires the organization-approved scans, load tests, requirements, and named human approvals listed in the final engineering summary.
 
 This prototype intentionally omits authentication, rate limiting, custom aliases, link management, abuse scanning, event-level analytics, distributed caching, and multi-region availability. Those are explicit limitations, not accidental gaps.
 
