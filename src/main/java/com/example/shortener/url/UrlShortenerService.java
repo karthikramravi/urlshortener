@@ -56,7 +56,6 @@ public class UrlShortenerService {
       if (uri.getUserInfo() != null) throw new InvalidUrl("URLs containing credentials are rejected");
       return uri.toASCIIString();
     } catch (IllegalArgumentException ex) {
-      if (ex instanceof InvalidUrl invalid) throw invalid;
       throw new InvalidUrl("Malformed URL");
     }
   }
