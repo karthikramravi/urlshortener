@@ -32,6 +32,8 @@ Run quality gates locally with Java 17 and Maven 3.9+:
 mvn clean verify
 ```
 
+Verified status: GitHub Actions run 8 completed `mvn -B clean verify` successfully on Java 17. Four unit tests and two end-to-end integration tests passed with zero failures, errors, or skips. See [docs/CI-VALIDATION.md](docs/CI-VALIDATION.md).
+
 ## Behavior
 
 | Case | Result |
