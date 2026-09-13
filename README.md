@@ -34,6 +34,10 @@ mvn clean verify
 
 Verified status: GitHub Actions run 8 completed `mvn -B clean verify` successfully on Java 17. Four unit tests and two end-to-end integration tests passed with zero failures, errors, or skips. See [docs/CI-VALIDATION.md](docs/CI-VALIDATION.md).
 
+Manual Windows 11 and Docker Compose verification is recorded in [docs/LOCAL-VALIDATION.md](docs/LOCAL-VALIDATION.md).
+
+Detailed prompt constraints, iterative refinements, generated/edited/rejected decisions, and engineer ownership are recorded in [docs/AI-EXECUTION-LOG.md](docs/AI-EXECUTION-LOG.md).
+
 ## Behavior
 
 | Case | Result |
