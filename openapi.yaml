@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info: {title: URL Shortener API, version: 1.0.0}
+paths:
+  /api/v1/urls:
+    post:
+      summary: Create a short URL
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/CreateRequest'}}}}
+      responses: {'201': {description: Created, content: {application/json: {schema: {$ref: '#/components/schemas/CreateResponse'}}}}, '400': {description: Invalid request}}
+  /{code}:
+    get:
+      summary: Redirect to original URL
+      parameters: [{name: code, in: path, required: true, schema: {type: string, pattern: '^[A-Za-z0-9]{7}$'}}]
+      responses: {'302': {description: Redirect, headers: {Location: {schema: {type: string, format: uri}}}}, '404': {description: Not found}, '410': {description: Expired}}
+  /api/v1/urls/{code}/analytics:
+    get:
+      summary: Get aggregate analytics
+      parameters: [{name: code, in: path, required: true, schema: {type: string}}]
+      responses: {'200': {description: Analytics}, '404': {description: Not found}}
+components:
+  schemas:
+    CreateRequest:
+      type: object
+      required: [originalUrl]
+      properties: {originalUrl: {type: string, format: uri, maxLength: 2048}, expiresInDays: {type: integer, minimum: 1, maximum: 3650}}
+    CreateResponse:
+      type: object
+      properties: {shortCode: {type: string}, shortUrl: {type: string, format: uri}, originalUrl: {type: string, format: uri}, createdAt: {type: string, format: date-time}, expiresAt: {type: string, format: date-time, nullable: true}}
