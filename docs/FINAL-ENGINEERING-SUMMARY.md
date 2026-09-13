@@ -18,7 +18,9 @@ A modular Spring Boot service is the smallest architecture that is operationally
 
 ## Validation status
 
-GitHub Actions run 8 executed `mvn -B clean verify` on Java 17 with `BUILD SUCCESS`: four unit tests and two Spring Boot end-to-end integration tests passed with zero failures, errors, or skips. The Docker build also executes `mvn verify`, preventing an image from being produced when compilation or tests fail. Docker Compose itself was not started in CI and remains a reviewer smoke-test step.
+GitHub Actions runs 8 and 12 executed `mvn -B clean verify` on Java 17 with `BUILD SUCCESS`: four unit tests and two Spring Boot end-to-end integration tests passed with zero failures, errors, or skips. The Docker build also executes `mvn verify`, preventing an image from being produced when compilation or tests fail.
+
+Docker Compose was additionally validated on Windows 11 with Docker Desktop and WSL 2. PostgreSQL became healthy, Spring Boot logged `Started UrlShortenerApplication`, Actuator returned `{"status":"UP"}`, and both ordinary and long URLs produced seven-character short codes. See [LOCAL-VALIDATION.md](LOCAL-VALIDATION.md).
 
 ## Key risks and controls
 
@@ -33,12 +35,14 @@ GitHub Actions run 8 executed `mvn -B clean verify` on Java 17 with `BUILD SUCCE
 
 Analytics means total clicks and timestamps only. Anonymous API access is prototype-only. Rate limiting, OAuth2 authorization, phishing/malware screening, per-event analytics, distributed cache, asynchronous counting, and multi-region deployment require explicit production requirements and are not included.
 
-## Engineer sign-off checklist
+## Assessment completion and production follow-ups
 
-- [ ] Run `mvn clean verify`
-- [ ] Run `docker compose up --build` and smoke-test all three endpoints
-- [ ] Run dependency, SAST, secret, and image scans
-- [ ] Load-test redirect concurrency and confirm no lost counts
-- [ ] Review OpenAPI compatibility and Flyway upgrade path
-- [ ] Confirm security, privacy, SLO, RTO/RPO, retention, and ownership requirements
-- [ ] Record named human approval before release
+- [x] Run `mvn clean verify`
+- [x] Start the complete application and PostgreSQL stack with `docker compose up --build`
+- [x] Validate create, redirect, analytics, unsafe URL, expiration, and missing-code behavior through automated tests
+- [x] Smoke-test application startup, health, and URL creation against the local Compose stack
+- [x] Review the prototype OpenAPI contract and Flyway migration
+- [ ] Before production: run organization-approved dependency, SAST, secret, and image scans
+- [ ] Before production: load-test redirect concurrency against agreed latency/error targets
+- [ ] Before production: approve security, privacy, SLO, RTO/RPO, retention, and ownership requirements
+- [ ] Before release: record named human approval for high-impact decisions
